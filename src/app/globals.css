@@ -120,6 +120,47 @@ h4 {
   border-radius: 4px;
 }
 
+/*
+  Animated glow ring for the highlighted pricing card: a slow-rotating
+  conic-gradient light sweeps around a 1.5px border. Purely decorative —
+  disabled under prefers-reduced-motion by the global rule above.
+*/
+.glow-ring {
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--radius-lg);
+  padding: 1.5px;
+  overflow: hidden;
+}
+
+.glow-ring::before {
+  content: "";
+  position: absolute;
+  inset: -60%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 300deg,
+    var(--color-gold-light) 330deg,
+    var(--color-gold) 345deg,
+    var(--color-gold-deep) 352deg,
+    var(--color-gold) 359deg,
+    transparent 360deg
+  );
+  animation: glow-ring-spin 7s linear infinite;
+}
+
+.glow-ring > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes glow-ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .container-ansova {
   width: 100%;
   max-width: var(--container-width);

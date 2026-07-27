@@ -10,6 +10,40 @@ function formatPrice(value: number) {
   return value % 1 === 0 ? `$${value}` : `$${value.toFixed(2)}`;
 }
 
+function usageLine(plan: PricingPlan) {
+  if (plan.includedMinutes === null) return "Custom usage allowance";
+  const parts = [`${plan.includedMinutes.toLocaleString()} min`];
+  if (plan.overageRate !== null) parts.push(`$${plan.overageRate.toFixed(2)}/min`);
+  if (plan.aiAgents !== null) parts.push(`${plan.aiAgents} agents`);
+  return parts.join(" · ");
+}
+
+function CardShell({
+  plan,
+  children,
+}: {
+  plan: PricingPlan;
+  children: React.ReactNode;
+}) {
+  if (!plan.highlighted) {
+    return (
+      <div className="relative flex h-full flex-col rounded-(--radius-lg) border border-(--color-border) bg-(--color-page) p-7 shadow-(--shadow-sm) transition-colors duration-200 hover:border-(--color-heading)/20">
+        {children}
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative h-full">
+      <div className="glow-ring h-full">
+        <div className="relative flex h-full flex-col rounded-(--radius-lg) bg-(--color-page) p-7 shadow-(--shadow-lg)">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function PricingCard({
   plan,
   cycle,
@@ -20,15 +54,9 @@ export default function PricingCard({
   const monthlyEquivalent = getMonthlyEquivalent(plan, cycle);
 
   return (
-    <div
-      className={`relative flex h-full flex-col rounded-(--radius-lg) border p-7 transition-colors duration-200 ${
-        plan.highlighted
-          ? "border-(--color-gold-deep)/50 bg-(--color-page) shadow-(--shadow-lg)"
-          : "border-(--color-border) bg-(--color-page) shadow-(--shadow-sm) hover:border-(--color-heading)/20"
-      }`}
-    >
+    <CardShell plan={plan}>
       {plan.highlighted && (
-        <span className="absolute -top-3 left-7 rounded-(--radius-pill) bg-gradient-to-br from-(--color-gold) to-(--color-gold-deep) px-3 py-1 text-[12px] font-semibold text-(--color-heading) shadow-(--shadow-sm)">
+        <span className="absolute -top-3 right-6 z-10 rounded-(--radius-pill) bg-gradient-to-br from-(--color-gold) to-(--color-gold-deep) px-3 py-1 text-[11.5px] font-semibold uppercase tracking-wide text-(--color-heading) shadow-(--shadow-sm)">
           Most popular
         </span>
       )}
@@ -51,13 +79,7 @@ export default function PricingCard({
             Custom
           </div>
         )}
-        <p className="mt-1.5 text-[12.5px] text-(--color-muted)">
-          {monthlyEquivalent !== null
-            ? cycle === "annual"
-              ? "Billed annually"
-              : "Billed monthly"
-            : "Volume-based, quoted for your team"}
-        </p>
+        <p className="mt-1.5 text-[12.5px] text-(--color-muted)">{usageLine(plan)}</p>
       </div>
 
       <div className="mt-6">
@@ -70,23 +92,7 @@ export default function PricingCard({
         </Button>
       </div>
 
-      <div className="mt-6 rounded-(--radius-md) bg-(--color-surface-muted) px-4 py-3 text-[13px] text-(--color-body)">
-        {plan.includedMinutes !== null ? (
-          <>
-            <strong className="font-semibold text-(--color-heading)">
-              {plan.includedMinutes.toLocaleString()} min
-            </strong>{" "}
-            included
-            {plan.overageRate !== null && (
-              <> &middot; ${plan.overageRate.toFixed(2)}/min after</>
-            )}
-          </>
-        ) : (
-          "Custom usage allowance"
-        )}
-      </div>
-
-      <ul className="mt-6 flex-1 space-y-3">
+      <ul className="mt-7 flex-1 space-y-3">
         {plan.features.map((feature) => (
           <li key={feature} className="flex items-start gap-2.5 text-[14px] text-(--color-body)">
             <Check
@@ -98,6 +104,6 @@ export default function PricingCard({
           </li>
         ))}
       </ul>
-    </div>
+    </CardShell>
   );
 }

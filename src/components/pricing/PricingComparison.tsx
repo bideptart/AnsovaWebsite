@@ -26,6 +26,8 @@ function ValueCell({ value }: { value?: string }) {
 export default function PricingComparison() {
   const [mobilePlanId, setMobilePlanId] = useState(pricingPlans[1].id);
   const mobilePlan = pricingPlans.find((p) => p.id === mobilePlanId)!;
+  const lastCategory = comparisonCategories[comparisonCategories.length - 1];
+  const lastRowLabel = lastCategory.rows[lastCategory.rows.length - 1].label;
 
   return (
     <Container className="py-16 sm:py-20">
@@ -48,13 +50,15 @@ export default function PricingComparison() {
                 <th
                   key={plan.id}
                   scope="col"
-                  className={`sticky top-[72px] z-30 border-b border-(--color-border) bg-(--color-page) px-4 py-4 text-left text-[15px] ${
-                    plan.highlighted ? "text-(--color-gold-deep)" : "text-(--color-heading)"
+                  className={`sticky top-[72px] z-30 px-4 py-4 text-left text-[15px] ${
+                    plan.highlighted
+                      ? "rounded-t-(--radius-md) border-b-2 border-(--color-gold) bg-(--color-gold-light)/50 text-(--color-gold-deep)"
+                      : "border-b border-(--color-border) bg-(--color-page) text-(--color-heading)"
                   }`}
                 >
                   {plan.name}
                   {plan.highlighted && (
-                    <span className="ml-2 rounded-(--radius-pill) bg-(--color-gold-light) px-2 py-0.5 text-[11px] font-semibold text-(--color-gold-deep)">
+                    <span className="ml-2 rounded-(--radius-pill) bg-(--color-gold-deep) px-2 py-0.5 text-[11px] font-semibold text-white">
                       Popular
                     </span>
                   )}
@@ -67,25 +71,44 @@ export default function PricingComparison() {
               <Fragment key={cat.category}>
                 <tr>
                   <th
-                    colSpan={pricingPlans.length + 1}
                     scope="colgroup"
                     className="bg-(--color-surface-muted) px-0 py-2 text-left text-[12.5px] font-semibold uppercase tracking-wide text-(--color-muted)"
                   >
                     <span className="block px-0 py-1">{cat.category}</span>
                   </th>
+                  {pricingPlans.map((plan) => (
+                    <th
+                      key={plan.id}
+                      scope="colgroup"
+                      aria-hidden="true"
+                      className={`px-0 py-2 ${
+                        plan.highlighted ? "bg-(--color-gold-light)/50" : "bg-(--color-surface-muted)"
+                      }`}
+                    />
+                  ))}
                 </tr>
-                {cat.rows.map((row) => (
-                  <tr key={row.label} className="border-b border-(--color-border-light)">
-                    <th scope="row" className="py-3.5 text-left text-[14px] font-normal text-(--color-body)">
-                      {row.label}
-                    </th>
-                    {pricingPlans.map((plan) => (
-                      <td key={plan.id} className="px-4 py-3.5 text-[14px]">
-                        <ValueCell value={row.values[plan.id]} />
-                      </td>
-                    ))}
-                  </tr>
-                ))}
+                {cat.rows.map((row) => {
+                  const isLastRow = cat.category === lastCategory.category && row.label === lastRowLabel;
+                  return (
+                    <tr key={row.label} className="border-b border-(--color-border-light)">
+                      <th scope="row" className="py-3.5 text-left text-[14px] font-normal text-(--color-body)">
+                        {row.label}
+                      </th>
+                      {pricingPlans.map((plan) => (
+                        <td
+                          key={plan.id}
+                          className={`px-4 py-3.5 text-[14px] ${
+                            plan.highlighted
+                              ? `bg-(--color-gold-light)/30 ${isLastRow ? "rounded-b-(--radius-md)" : ""}`
+                              : ""
+                          }`}
+                        >
+                          <ValueCell value={row.values[plan.id]} />
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })}
               </Fragment>
             ))}
           </tbody>
