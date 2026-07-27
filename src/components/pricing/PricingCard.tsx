@@ -1,4 +1,4 @@
-import { Check, Gem } from "lucide-react";
+import { Check } from "lucide-react";
 import Button from "@/components/ui/Button";
 import {
   BillingCycle,
@@ -20,9 +20,6 @@ function usageLine(plan: PricingPlan) {
   return parts.join(" · ");
 }
 
-// Each tier reads as a step up in weight, using only the existing navy/gold
-// palette: Starter is plain and quiet, Growth is the warm, energetic
-// "most popular" pick, Scale is the cooler, heavier, top-of-ladder plan.
 function CardShell({
   plan,
   children,
@@ -30,18 +27,6 @@ function CardShell({
   plan: PricingPlan;
   children: React.ReactNode;
 }) {
-  if (plan.id === "scale") {
-    return (
-      <div className="relative flex h-full flex-col overflow-hidden rounded-(--radius-lg) border border-(--color-heading)/15 bg-(--color-surface-muted) shadow-(--shadow-md) transition-colors duration-200 hover:border-(--color-gold-deep)">
-        <div
-          className="h-1.5 w-full bg-gradient-to-r from-(--color-gold) via-(--color-gold-deep) to-(--color-gold)"
-          aria-hidden="true"
-        />
-        <div className="flex h-full flex-col p-7">{children}</div>
-      </div>
-    );
-  }
-
   if (!plan.highlighted) {
     return (
       <div className="relative flex h-full flex-col rounded-(--radius-lg) border border-(--color-border) bg-(--color-page) p-7 shadow-(--shadow-sm) transition-colors duration-200 hover:border-(--color-gold-deep)">
@@ -91,12 +76,7 @@ export default function PricingCard({
 
   return (
     <CardShell plan={plan}>
-      <h3 className="flex items-center gap-1.5 text-[20px]">
-        {plan.name}
-        {plan.id === "scale" && (
-          <Gem size={15} className="text-(--color-gold-deep)" aria-hidden="true" />
-        )}
-      </h3>
+      <h3 className="text-[20px]">{plan.name}</h3>
       <p className="mt-2 text-[14px] leading-relaxed text-(--color-muted)">
         {plan.description}
       </p>
