@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+/*
+  Design tokens.
+  Palette, type scale, radii and shadows are matched to the computed
+  styles of the current Ajoxi.com design system (colors + font families
+  only) so the site shares a visual language with the rest of the
+  product marketing surface. No Ajoxi copy, imagery or branding is reused.
+*/
+:root {
+  --font-display: var(--font-outfit);
+  --font-body: var(--font-dm-sans);
+
+  --color-page: #ffffff;
+  --color-surface-alt: #fffaf3;
+  --color-surface-alt-deep: #f9f0dd;
+  --color-surface-muted: #f2f3f7;
+
+  --color-heading: #1a1a2e;
+  --color-body: #3f3f52;
+  --color-muted: #6b6b7e;
+
+  --color-border: #ece4d2;
+  --color-border-light: #f4ecdb;
+
+  --color-primary: #1a1a2e;
+  --color-primary-hover: #12121f;
+
+  --color-gold: #f5a623;
+  --color-gold-deep: #d88a0e;
+  --color-gold-light: #fce9c0;
+  --color-gold-muted: #e8c68f;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 2px 6px rgba(26, 26, 46, 0.05);
+  --shadow-md: 0 8px 22px rgba(26, 26, 46, 0.07);
+  --shadow-lg: 0 16px 36px rgba(26, 26, 46, 0.1);
+
+  --container-width: 1200px;
+  --container-padding: 20px;
+}
+
+@theme inline {
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+
+  --color-page: var(--color-page);
+  --color-surface-alt: var(--color-surface-alt);
+  --color-surface-alt-deep: var(--color-surface-alt-deep);
+  --color-surface-muted: var(--color-surface-muted);
+
+  --color-heading: var(--color-heading);
+  --color-body: var(--color-body);
+  --color-muted: var(--color-muted);
+
+  --color-border: var(--color-border);
+  --color-border-light: var(--color-border-light);
+
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+
+  --color-gold: var(--color-gold);
+  --color-gold-deep: var(--color-gold-deep);
+  --color-gold-light: var(--color-gold-light);
+  --color-gold-muted: var(--color-gold-muted);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-pill: var(--radius-pill);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--color-page);
+  color: var(--color-body);
+  font-family: var(--font-body), "DM Sans Fallback", ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display), "Outfit Fallback", ui-sans-serif, system-ui, sans-serif;
+  color: var(--color-heading);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold-deep);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.container-ansova {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+@media (min-width: 640px) {
+  .container-ansova {
+    --container-padding: 28px;
+  }
+}
