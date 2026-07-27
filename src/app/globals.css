@@ -142,57 +142,23 @@ h4 {
 }
 
 /*
-  Two soft glowing "bumps" of light that travel along the highlighted
-  card's border, centered exactly on the border line itself (a small
-  radial glow that fades at the edges, not a hard floating ball).
-  They're pseudo-elements sized independently of the card (not a
-  wrapper around it), so they can't clip the badge beside them. Each
-  runs the same rectangular path; the second is offset by exactly half
-  the cycle, so they're always on the opposite side of the card.
+  A single glowing gold segment that continuously traces around the
+  highlighted card's border, like a neon line drawing itself in a loop.
+  Built as an SVG rect stroke (not a CSS mask), which is far more
+  consistently supported across browsers. `pathLength={100}` normalizes
+  the rectangle's perimeter to 0-100 regardless of the card's actual
+  pixel size, so the dash length and animation are simple percentages.
+  The stroke sits centered on the border line itself (SVG default),
+  so the glow naturally pokes slightly outside the card edge.
 */
-.card-glow-pulse::before,
-.card-glow-pulse::after {
-  content: "";
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--color-gold-light) 0%,
-    var(--color-gold) 45%,
-    transparent 80%
-  );
-  box-shadow: 0 0 8px 2px rgba(216, 138, 14, 0.55);
-  pointer-events: none;
-  z-index: 5;
-  animation: card-beam-run 6s linear infinite;
+.border-trace-dash {
+  filter: drop-shadow(0 0 3px var(--color-gold)) drop-shadow(0 0 7px var(--color-gold-light));
+  animation: border-trace 3.5s linear infinite;
 }
 
-.card-glow-pulse::after {
-  animation-delay: -3s;
-}
-
-@keyframes card-beam-run {
-  0% {
-    top: -4px;
-    left: -4px;
-  }
-  25% {
-    top: -4px;
-    left: calc(100% - 4px);
-  }
-  50% {
-    top: calc(100% - 4px);
-    left: calc(100% - 4px);
-  }
-  75% {
-    top: calc(100% - 4px);
-    left: -4px;
-  }
-  100% {
-    top: -4px;
-    left: -4px;
+@keyframes border-trace {
+  to {
+    stroke-dashoffset: -100;
   }
 }
 

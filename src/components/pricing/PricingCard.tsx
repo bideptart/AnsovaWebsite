@@ -32,7 +32,7 @@ function CardShell({
 }) {
   if (plan.id === "scale") {
     return (
-      <div className="relative flex h-full flex-col overflow-hidden rounded-(--radius-lg) border border-(--color-heading)/15 bg-(--color-surface-muted) shadow-(--shadow-md) transition-colors duration-200 hover:border-(--color-heading)/30">
+      <div className="relative flex h-full flex-col overflow-hidden rounded-(--radius-lg) border border-(--color-heading)/15 bg-(--color-surface-muted) shadow-(--shadow-md) transition-colors duration-200 hover:border-(--color-gold-deep)">
         <div
           className="h-1.5 w-full bg-gradient-to-r from-(--color-gold) via-(--color-gold-deep) to-(--color-gold)"
           aria-hidden="true"
@@ -44,7 +44,7 @@ function CardShell({
 
   if (!plan.highlighted) {
     return (
-      <div className="relative flex h-full flex-col rounded-(--radius-lg) border border-(--color-border) bg-(--color-page) p-7 shadow-(--shadow-sm) transition-colors duration-200 hover:border-(--color-heading)/20">
+      <div className="relative flex h-full flex-col rounded-(--radius-lg) border border-(--color-border) bg-(--color-page) p-7 shadow-(--shadow-sm) transition-colors duration-200 hover:border-(--color-gold-deep)">
         {children}
       </div>
     );
@@ -55,6 +55,26 @@ function CardShell({
       <span className="absolute -top-3 right-6 z-10 rounded-(--radius-pill) bg-(--color-gold-deep) px-3 py-1 text-[11.5px] font-semibold uppercase tracking-wide text-white shadow-(--shadow-sm)">
         Most popular
       </span>
+      <svg
+        className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
+        aria-hidden="true"
+      >
+        <rect
+          x="0"
+          y="0"
+          width="100%"
+          height="100%"
+          rx="18"
+          ry="18"
+          fill="none"
+          stroke="var(--color-gold)"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          pathLength={100}
+          strokeDasharray="16 84"
+          className="border-trace-dash"
+        />
+      </svg>
       {children}
     </div>
   );
