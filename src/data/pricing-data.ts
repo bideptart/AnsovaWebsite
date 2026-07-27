@@ -41,20 +41,20 @@ export const ANNUAL_DISCOUNT_PERCENT = 20;
 export const pricingPlans: PricingPlan[] = [
   {
     id: "launch",
-    name: "Launch",
+    name: "Starter",
     description:
       "For individuals and small teams launching their first AI voice agent.",
-    monthlyPrice: 49,
-    includedMinutes: 300,
-    overageRate: 0.15,
+    monthlyPrice: 31,
+    includedMinutes: 250,
+    overageRate: 0.13,
     concurrentCalls: 2,
-    aiAgents: 1,
+    aiAgents: 2,
     phoneNumbers: 1,
     integrations: "Core integrations",
     support: "Email support",
     features: [
-      "1 AI voice agent",
-      "300 included voice minutes",
+      "2 AI voice agents",
+      "250 included voice minutes",
       "Inbound call handling",
       "Conversation transcripts",
       "Standard voice quality",
@@ -70,17 +70,17 @@ export const pricingPlans: PricingPlan[] = [
     name: "Growth",
     description:
       "For growing teams handling a consistent volume of customer conversations.",
-    monthlyPrice: 149,
-    includedMinutes: 1200,
+    monthlyPrice: 93,
+    includedMinutes: 800,
     overageRate: 0.12,
     concurrentCalls: 5,
-    aiAgents: 3,
+    aiAgents: 10,
     phoneNumbers: 3,
     integrations: "Core + CRM integrations",
     support: "Priority support",
     features: [
-      "3 AI voice agents",
-      "1,200 included voice minutes",
+      "10 AI voice agents",
+      "800 included voice minutes",
       "Inbound & outbound calling",
       "Conversation transcripts & analytics",
       "Premium voice quality",
@@ -97,17 +97,17 @@ export const pricingPlans: PricingPlan[] = [
     name: "Scale",
     description:
       "For larger teams that need more capacity, integrations and control.",
-    monthlyPrice: 399,
-    includedMinutes: 4000,
-    overageRate: 0.09,
+    monthlyPrice: 316,
+    includedMinutes: 3000,
+    overageRate: 0.11,
     concurrentCalls: 15,
-    aiAgents: 10,
+    aiAgents: "Unlimited",
     phoneNumbers: 10,
     integrations: "Advanced integrations & webhooks",
     support: "Dedicated success manager",
     features: [
-      "10 AI voice agents",
-      "4,000 included voice minutes",
+      "Unlimited AI voice agents",
+      "3,000 included voice minutes",
       "Inbound & outbound calling",
       "Advanced analytics & webhooks",
       "Premium voice quality",
@@ -163,6 +163,12 @@ export function getBillTotal(
   return Math.round(getMonthlyEquivalent(plan, "annual")! * 12);
 }
 
+// The pricing grid, comparison table and usage estimator only ever list the
+// fixed-price plans. Enterprise is volume-based and reached via "Contact
+// sales" / "Talk to sales" CTAs instead of a listed tier.
+export const listedPlans = pricingPlans.filter((p) => !p.customPricing);
+export const enterprisePlan = pricingPlans.find((p) => p.customPricing)!;
+
 // Capabilities shared by every plan, shown in the "Included in every plan" section.
 // TODO(product): verify each capability is actually true of the current platform.
 export const includedEverywhere = [
@@ -179,84 +185,38 @@ export interface ComparisonRow {
   values: Partial<Record<PricingPlan["id"], string>>;
 }
 
-export interface ComparisonCategory {
-  category: string;
-  rows: ComparisonRow[];
-}
-
-export const comparisonCategories: ComparisonCategory[] = [
+// TODO(product): verify voice stack tiering and SLA availability are accurate.
+export const comparisonRows: ComparisonRow[] = [
   {
-    category: "Voice usage",
-    rows: [
-      {
-        label: "Included minutes",
-        values: { launch: "300 min", growth: "1,200 min", scale: "4,000 min", enterprise: "Custom" },
-      },
-      {
-        label: "Overage rate",
-        values: { launch: "$0.15/min", growth: "$0.12/min", scale: "$0.09/min", enterprise: "Custom" },
-      },
-    ],
+    label: "Included minutes",
+    values: { launch: "250 min", growth: "800 min", scale: "3,000 min" },
   },
   {
-    category: "AI agents & calling",
-    rows: [
-      {
-        label: "AI voice agents",
-        values: { launch: "1", growth: "3", scale: "10", enterprise: "Unlimited" },
-      },
-      {
-        label: "Concurrent calls",
-        values: { launch: "2", growth: "5", scale: "15", enterprise: "Custom" },
-      },
-      {
-        label: "Outbound calling",
-        values: { launch: "—", growth: "check", scale: "check", enterprise: "check" },
-      },
-    ],
+    label: "Effective rate",
+    values: { launch: "$0.13/min", growth: "$0.12/min", scale: "$0.11/min" },
   },
   {
-    category: "Phone numbers",
-    rows: [
-      {
-        label: "Included phone numbers",
-        values: { launch: "1", growth: "3", scale: "10", enterprise: "Custom" },
-      },
-    ],
+    label: "AI voice agents",
+    values: { launch: "2", growth: "10", scale: "Unlimited" },
   },
   {
-    category: "Integrations & automation",
-    rows: [
-      {
-        label: "CRM integrations",
-        values: { launch: "—", growth: "check", scale: "check", enterprise: "check" },
-      },
-      {
-        label: "Webhooks & API",
-        values: { launch: "check", growth: "check", scale: "check", enterprise: "check" },
-      },
-    ],
+    label: "Voice stack",
+    values: { launch: "Standard", growth: "Standard + premium", scale: "Realtime + premium" },
   },
   {
-    category: "Analytics",
-    rows: [
-      {
-        label: "Usage analytics",
-        values: { launch: "check", growth: "check", scale: "check", enterprise: "check" },
-      },
-      {
-        label: "Advanced reporting",
-        values: { launch: "—", growth: "—", scale: "check", enterprise: "check" },
-      },
-    ],
+    label: "Call recording",
+    values: { launch: "check", growth: "check", scale: "check" },
   },
   {
-    category: "Support",
-    rows: [
-      {
-        label: "Support level",
-        values: { launch: "Email", growth: "Priority", scale: "Dedicated success manager", enterprise: "Dedicated + SLA" },
-      },
-    ],
+    label: "Real-time transcription",
+    values: { launch: "check", growth: "check", scale: "check" },
+  },
+  {
+    label: "Support",
+    values: { launch: "Email", growth: "Priority", scale: "Dedicated success manager" },
+  },
+  {
+    label: "SLA",
+    values: { launch: "—", growth: "—", scale: "check" },
   },
 ];

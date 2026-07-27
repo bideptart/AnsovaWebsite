@@ -14,7 +14,9 @@ function usageLine(plan: PricingPlan) {
   if (plan.includedMinutes === null) return "Custom usage allowance";
   const parts = [`${plan.includedMinutes.toLocaleString()} min`];
   if (plan.overageRate !== null) parts.push(`$${plan.overageRate.toFixed(2)}/min`);
-  if (plan.aiAgents !== null) parts.push(`${plan.aiAgents} agents`);
+  if (plan.aiAgents !== null) {
+    parts.push(`${plan.aiAgents} agent${plan.aiAgents === 1 ? "" : "s"}`);
+  }
   return parts.join(" · ");
 }
 
@@ -34,12 +36,11 @@ function CardShell({
   }
 
   return (
-    <div className="relative h-full">
-      <div className="glow-ring h-full">
-        <div className="relative flex h-full flex-col rounded-(--radius-lg) bg-(--color-page) p-7 shadow-(--shadow-lg)">
-          {children}
-        </div>
-      </div>
+    <div className="card-glow-pulse relative flex h-full flex-col rounded-(--radius-lg) border-2 border-(--color-gold-deep) bg-(--color-page) p-7">
+      <span className="absolute -top-3 right-6 z-10 rounded-(--radius-pill) bg-(--color-gold-deep) px-3 py-1 text-[11.5px] font-semibold uppercase tracking-wide text-white shadow-(--shadow-sm)">
+        Most popular
+      </span>
+      {children}
     </div>
   );
 }
@@ -55,12 +56,6 @@ export default function PricingCard({
 
   return (
     <CardShell plan={plan}>
-      {plan.highlighted && (
-        <span className="absolute -top-3 right-6 z-10 rounded-(--radius-pill) bg-gradient-to-br from-(--color-gold) to-(--color-gold-deep) px-3 py-1 text-[11.5px] font-semibold uppercase tracking-wide text-(--color-heading) shadow-(--shadow-sm)">
-          Most popular
-        </span>
-      )}
-
       <h3 className="text-[20px]">{plan.name}</h3>
       <p className="mt-2 text-[14px] leading-relaxed text-(--color-muted)">
         {plan.description}

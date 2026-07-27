@@ -6,11 +6,10 @@ import Button from "@/components/ui/Button";
 import {
   BillingCycle,
   getMonthlyEquivalent,
-  pricingPlans,
+  listedPlans,
 } from "@/data/pricing-data";
 
-const fixedPlans = pricingPlans.filter((p) => !p.customPricing);
-const highestFixedPlan = fixedPlans[fixedPlans.length - 1];
+const highestFixedPlan = listedPlans[listedPlans.length - 1];
 const MAX_SLIDER_MINUTES = (highestFixedPlan.includedMinutes ?? 4000) * 2;
 
 function formatUsd(value: number) {
@@ -22,21 +21,20 @@ function formatUsd(value: number) {
 
 export default function UsageEstimator({ cycle }: { cycle: BillingCycle }) {
   const [minutes, setMinutes] = useState(800);
-  const [planId, setPlanId] = useState<(typeof pricingPlans)[number]["id"]>(
+  const [planId, setPlanId] = useState<(typeof listedPlans)[number]["id"]>(
     "growth"
   );
   const sliderId = useId();
   const inputId = useId();
 
   const selectedPlan =
-    pricingPlans.find((p) => p.id === planId) ?? pricingPlans[0];
+    listedPlans.find((p) => p.id === planId) ?? listedPlans[0];
 
   const overflowsAllPlans =
     highestFixedPlan.includedMinutes !== null &&
     minutes > highestFixedPlan.includedMinutes;
 
   const estimate = useMemo(() => {
-    if (selectedPlan.customPricing) return null;
     if (selectedPlan.includedMinutes === null || selectedPlan.overageRate === null) {
       return null;
     }
@@ -105,7 +103,7 @@ export default function UsageEstimator({ cycle }: { cycle: BillingCycle }) {
               Selected plan
             </legend>
             <div className="mt-3 flex flex-wrap gap-2">
-              {pricingPlans.map((plan) => (
+              {listedPlans.map((plan) => (
                 <button
                   key={plan.id}
                   type="button"
@@ -129,16 +127,6 @@ export default function UsageEstimator({ cycle }: { cycle: BillingCycle }) {
             <div className="flex flex-col items-start gap-4">
               <p className="text-[15px] leading-relaxed text-(--color-body)">
                 Your usage may be better suited to a custom plan.
-              </p>
-              <Button href="/contact" size="md">
-                <PhoneCall size={16} aria-hidden="true" />
-                Talk to sales
-              </Button>
-            </div>
-          ) : selectedPlan.customPricing ? (
-            <div className="flex flex-col items-start gap-4">
-              <p className="text-[15px] leading-relaxed text-(--color-body)">
-                Enterprise usage is volume-based and quoted for your team.
               </p>
               <Button href="/contact" size="md">
                 <PhoneCall size={16} aria-hidden="true" />

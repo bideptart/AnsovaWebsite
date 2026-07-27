@@ -29,7 +29,7 @@ export const pricingFaq: FaqItem[] = [
     question: "Can I change my plan later?",
     // TODO(billing): confirm proration policy for upgrades/downgrades.
     answer:
-      "Yes. You can move between Launch, Growth and Scale as your call volume changes, and move to a custom Enterprise agreement at any time.",
+      "Yes. You can move between Starter, Growth and Scale as your call volume changes, and move to a custom Enterprise agreement at any time.",
   },
   {
     question: "Are phone numbers included?",

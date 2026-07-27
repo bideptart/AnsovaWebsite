@@ -121,43 +121,22 @@ h4 {
 }
 
 /*
-  Animated glow ring for the highlighted pricing card: a slow-rotating
-  conic-gradient light sweeps around a 1.5px border. Purely decorative —
-  disabled under prefers-reduced-motion by the global rule above.
+  Gentle pulsing glow for the highlighted pricing card: the card's own
+  box-shadow breathes between a soft and slightly stronger gold halo.
+  No extra wrapper elements, so it can't clip the badge above it.
+  Disabled under prefers-reduced-motion by the global rule above.
 */
-.glow-ring {
-  position: relative;
-  isolation: isolate;
-  border-radius: var(--radius-lg);
-  padding: 1.5px;
-  overflow: hidden;
+.card-glow-pulse {
+  animation: card-glow-pulse 3.2s ease-in-out infinite;
 }
 
-.glow-ring::before {
-  content: "";
-  position: absolute;
-  inset: -60%;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    transparent 300deg,
-    var(--color-gold-light) 330deg,
-    var(--color-gold) 345deg,
-    var(--color-gold-deep) 352deg,
-    var(--color-gold) 359deg,
-    transparent 360deg
-  );
-  animation: glow-ring-spin 7s linear infinite;
-}
-
-.glow-ring > * {
-  position: relative;
-  z-index: 1;
-}
-
-@keyframes glow-ring-spin {
-  to {
-    transform: rotate(360deg);
+@keyframes card-glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 8px 22px rgba(216, 138, 14, 0.16);
+  }
+  50% {
+    box-shadow: 0 10px 32px rgba(216, 138, 14, 0.3);
   }
 }
 

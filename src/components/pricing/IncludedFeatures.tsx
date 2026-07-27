@@ -25,7 +25,7 @@ export default function IncludedFeatures() {
       <div className="mx-auto max-w-xl text-center">
         <h2 className="text-[28px] sm:text-[32px]">Included in every plan</h2>
         <p className="mt-3 text-[15px] leading-relaxed text-(--color-muted)">
-          Core platform capabilities available on Launch, Growth, Scale and
+          Core platform capabilities available on Starter, Growth, Scale and
           Enterprise.
         </p>
       </div>
