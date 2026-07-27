@@ -142,45 +142,57 @@ h4 {
 }
 
 /*
-  Two light trails traveling around the highlighted card's existing
-  border, exactly opposite each other (180deg apart). Implemented as a
-  rotating conic-gradient masked down to a ring the width of the
-  border — the ring is a pseudo-element the same size as the card, not
-  a wrapper, so it can never clip the badge sitting beside it.
+  Two soft glowing "bumps" of light that travel along the highlighted
+  card's border, centered exactly on the border line itself (a small
+  radial glow that fades at the edges, not a hard floating ball).
+  They're pseudo-elements sized independently of the card (not a
+  wrapper around it), so they can't clip the badge beside them. Each
+  runs the same rectangular path; the second is offset by exactly half
+  the cycle, so they're always on the opposite side of the card.
 */
+.card-glow-pulse::before,
 .card-glow-pulse::after {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 2px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    transparent 80deg,
-    var(--color-gold-light) 88deg,
-    var(--color-gold) 90deg,
-    var(--color-gold-light) 92deg,
-    transparent 100deg,
-    transparent 260deg,
-    var(--color-gold-light) 268deg,
-    var(--color-gold) 270deg,
-    var(--color-gold-light) 272deg,
-    transparent 280deg,
-    transparent 360deg
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--color-gold-light) 0%,
+    var(--color-gold) 45%,
+    transparent 80%
   );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: card-beam-spin 6s linear infinite;
+  box-shadow: 0 0 8px 2px rgba(216, 138, 14, 0.55);
   pointer-events: none;
+  z-index: 5;
+  animation: card-beam-run 6s linear infinite;
 }
 
-@keyframes card-beam-spin {
-  to {
-    transform: rotate(360deg);
+.card-glow-pulse::after {
+  animation-delay: -3s;
+}
+
+@keyframes card-beam-run {
+  0% {
+    top: -4px;
+    left: -4px;
+  }
+  25% {
+    top: -4px;
+    left: calc(100% - 4px);
+  }
+  50% {
+    top: calc(100% - 4px);
+    left: calc(100% - 4px);
+  }
+  75% {
+    top: calc(100% - 4px);
+    left: -4px;
+  }
+  100% {
+    top: -4px;
+    left: -4px;
   }
 }
 
