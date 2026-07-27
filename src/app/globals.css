@@ -127,6 +127,7 @@ h4 {
   Disabled under prefers-reduced-motion by the global rule above.
 */
 .card-glow-pulse {
+  position: relative;
   animation: card-glow-pulse 3.2s ease-in-out infinite;
 }
 
@@ -137,6 +138,49 @@ h4 {
   }
   50% {
     box-shadow: 0 10px 32px rgba(216, 138, 14, 0.3);
+  }
+}
+
+/*
+  Two light trails traveling around the highlighted card's existing
+  border, exactly opposite each other (180deg apart). Implemented as a
+  rotating conic-gradient masked down to a ring the width of the
+  border — the ring is a pseudo-element the same size as the card, not
+  a wrapper, so it can never clip the badge sitting beside it.
+*/
+.card-glow-pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 80deg,
+    var(--color-gold-light) 88deg,
+    var(--color-gold) 90deg,
+    var(--color-gold-light) 92deg,
+    transparent 100deg,
+    transparent 260deg,
+    var(--color-gold-light) 268deg,
+    var(--color-gold) 270deg,
+    var(--color-gold-light) 272deg,
+    transparent 280deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: card-beam-spin 6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes card-beam-spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
