@@ -174,3 +174,176 @@ h4 {
     --container-padding: 28px;
   }
 }
+
+/* ==========================================================================
+   Homepage + FAQ token layer.
+   These alias the palette declared above rather than redefining colours, so
+   the existing tokens stay the single source of truth. `.theme-dark` re-declares
+   the same names for navy sections, letting one component render correctly on
+   both light and dark surfaces.
+   ========================================================================== */
+:root {
+  --background-primary: var(--color-page);
+  --background-secondary: var(--color-surface-alt);
+  --background-elevated: var(--color-page);
+
+  --surface-raised: var(--color-page);
+  --surface-sunken: rgba(26, 26, 46, 0.035);
+  --surface-muted: rgba(26, 26, 46, 0.06);
+
+  --text-primary: var(--color-heading);
+  --text-secondary: var(--color-body);
+  --text-tertiary: #5d5d70;
+
+  --brand-primary: var(--color-gold);
+  --brand-strong: var(--color-gold-deep);
+  /* Text-safe amber: --color-gold sits near 2:1 on white, so headings and
+     labels use this darker tone to clear WCAG AA. */
+  --brand-ink: #965c06;
+  --brand-contrast: var(--color-heading);
+  --brand-soft: rgba(245, 166, 35, 0.14);
+  --accent-secondary: #33608f;
+  --accent-secondary-soft: rgba(61, 111, 168, 0.14);
+
+  --border-primary: var(--color-border);
+  --border-secondary: #ddd3bd;
+
+  --success: #15693d;
+  --warning: #965c06;
+  --danger: #b8382f;
+
+  --grid-line: rgba(26, 26, 46, 0.05);
+  --shadow-soft: var(--shadow-sm);
+  --shadow-elevated: var(--shadow-md);
+}
+
+.theme-dark {
+  --background-primary: #1a1a2e;
+  --background-secondary: #16162a;
+  --background-elevated: #212140;
+
+  --surface-raised: rgba(255, 250, 243, 0.06);
+  --surface-sunken: rgba(255, 250, 243, 0.04);
+  --surface-muted: rgba(255, 250, 243, 0.1);
+
+  --text-primary: #fffaf3;
+  --text-secondary: rgba(255, 250, 243, 0.78);
+  --text-tertiary: rgba(255, 250, 243, 0.62);
+
+  --brand-ink: var(--color-gold);
+  --brand-contrast: #1a1a2e;
+  --brand-soft: rgba(245, 166, 35, 0.16);
+  --accent-secondary: #7fb0e0;
+  --accent-secondary-soft: rgba(127, 176, 224, 0.16);
+
+  --border-primary: rgba(255, 250, 243, 0.12);
+  --border-secondary: rgba(255, 250, 243, 0.2);
+
+  --success: #5fcb92;
+  --warning: #f0b23f;
+  --danger: #f0827a;
+
+  --grid-line: rgba(255, 250, 243, 0.06);
+  --shadow-elevated: 0 12px 34px -14px rgba(0, 0, 0, 0.6);
+
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+}
+
+@theme inline {
+  --color-background-primary: var(--background-primary);
+  --color-background-secondary: var(--background-secondary);
+  --color-background-elevated: var(--background-elevated);
+
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-muted: var(--surface-muted);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-contrast: var(--brand-contrast);
+  --color-brand-soft: var(--brand-soft);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-secondary-soft: var(--accent-secondary-soft);
+
+  --color-border-primary: var(--border-primary);
+  --color-border-secondary: var(--border-secondary);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --font-display: var(--font-display);
+  --font-mono: ui-monospace, "JetBrains Mono", monospace;
+}
+
+.bg-grid-faint {
+  background-image: linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.bg-dots {
+  background-image: radial-gradient(var(--grid-line) 1.2px, transparent 1.2px);
+  background-size: 20px 20px;
+}
+
+.text-gradient-brand {
+  background: linear-gradient(100deg, #965c06 0%, #c77f0c 55%, #965c06 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.theme-dark .text-gradient-brand {
+  background: linear-gradient(100deg, var(--color-gold) 0%, #ffd089 55%, var(--color-gold) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.glow-amber {
+  background: radial-gradient(circle, rgba(245, 166, 35, 0.28) 0%, rgba(245, 166, 35, 0) 68%);
+}
+.glow-blue {
+  background: radial-gradient(circle, rgba(61, 111, 168, 0.2) 0%, rgba(61, 111, 168, 0) 68%);
+}
+
+.card-hover {
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  border-color: rgba(245, 166, 35, 0.45);
+  box-shadow: var(--shadow-lg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .card-hover:hover {
+    transform: none;
+  }
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee-scroll 38s linear infinite;
+  will-change: transform;
+}
+.marquee-mask {
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+  .marquee-mask { mask-image: none; -webkit-mask-image: none; }
+}
+
+.text-balance { text-wrap: balance; }
+
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }

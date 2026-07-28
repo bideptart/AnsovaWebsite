@@ -8,10 +8,17 @@ import Logo from "./Logo";
 import Button from "@/components/ui/Button";
 
 const NAV_LINKS = [
+  { label: "Features", href: "/#features" },
+  { label: "Industries", href: "/#industries" },
   { label: "Pricing", href: "/pricing" },
-  { label: "FAQ", href: "/pricing#faq" },
-  { label: "Contact", href: "/contact" },
+  { label: "Blog", href: "/blog" },
+  { label: "FAQ", href: "/faq" },
 ];
+
+function isLinkActive(href: string, pathname: string | null) {
+  if (href.startsWith("/#")) return false;
+  return pathname?.startsWith(href) ?? false;
+}
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -27,8 +34,7 @@ export default function Navbar() {
           aria-label="Primary"
         >
           {NAV_LINKS.map((link) => {
-            const isActive =
-              link.href === "/pricing" && pathname?.startsWith("/pricing");
+            const isActive = isLinkActive(link.href, pathname);
             return (
               <a
                 key={link.href}
@@ -46,9 +52,18 @@ export default function Navbar() {
           })}
         </nav>
 
-        <div className="hidden md:block">
-          <Button href="/contact" size="md">
-            Get started
+        <div className="hidden items-center gap-2 md:flex">
+          <a
+            href="/sign-in"
+            className="rounded-(--radius-pill) px-4 py-2 text-[14.5px] font-medium text-(--color-body) transition-colors duration-150 hover:text-(--color-heading) hover:bg-(--color-surface-muted)"
+          >
+            Sign in
+          </a>
+          <Button href="/contact" variant="secondary" size="md">
+            Book a demo
+          </Button>
+          <Button href="/#final-cta" size="md">
+            Start building
           </Button>
         </div>
 
@@ -68,8 +83,7 @@ export default function Navbar() {
         <div id="mobile-nav" className="border-t border-(--color-border) md:hidden">
           <Container className="flex flex-col gap-1 py-3">
             {NAV_LINKS.map((link) => {
-              const isActive =
-                link.href === "/pricing" && pathname?.startsWith("/pricing");
+              const isActive = isLinkActive(link.href, pathname);
               return (
                 <a
                   key={link.href}
@@ -86,8 +100,18 @@ export default function Navbar() {
                 </a>
               );
             })}
-            <Button href="/contact" size="md" className="mt-2 w-full">
-              Get started
+            <a
+              href="/sign-in"
+              onClick={() => setOpen(false)}
+              className="min-h-[44px] rounded-(--radius-md) px-3 py-3 text-[15px] font-medium text-(--color-body)"
+            >
+              Sign in
+            </a>
+            <Button href="/contact" variant="secondary" size="md" className="mt-2 w-full">
+              Book a demo
+            </Button>
+            <Button href="/#final-cta" size="md" className="mt-2 w-full">
+              Start building
             </Button>
           </Container>
         </div>
