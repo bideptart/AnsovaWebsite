@@ -8,6 +8,7 @@ import Logo from "./Logo";
 import Button from "@/components/ui/Button";
 
 const NAV_LINKS = [
+  { label: "Features", href: "/features" },
   { label: "Pricing", href: "/pricing" },
   { label: "FAQ", href: "/pricing#faq" },
   { label: "Contact", href: "/contact" },
